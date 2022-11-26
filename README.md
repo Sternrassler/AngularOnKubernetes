@@ -119,7 +119,7 @@ After that, the container can be tested locally with the command `docker run -d 
 
 ## Deploy to Kubernetes
 
-First, the container must be pushed to the Azure Container Registry. This is done using the command `docker push sternrassler/angular-on-kubernetes:0.0.1`.
+First, the container must be pushed to the Registry. This is done using the command `docker push sternrassler/angular-on-kubernetes:0.0.1`.
 
 Now Namespace must be created in Kubernetes. This is done using the command `kubectl create namespace test`.
 
@@ -146,8 +146,7 @@ spec:
       containers:
         - name: angular-on-kubernetes
           image: sternrassler/angular-on-kubernetes:0.0.1
-          imagePullSecrets:
-            - name: regcred
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
 ``` 
@@ -196,7 +195,7 @@ spec:
                   number: 80
 ```
 
-Der Einfachheit halber wird hier alles in ein `deploy.yaml`` gepackt. Und mit folgendem Befehl wird das ganze auf Kubernetes deployed:
+For simplicity, everything is packed into a `deploy.yaml`` here. And with the following command the whole thing is deployed to Kubernetes:
 
 `kubectl apply -f kubernetes/deploy.yaml`
 
