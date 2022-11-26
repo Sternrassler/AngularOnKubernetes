@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: angular-on-kubernetes
+  namespace: test
+spec:
+  type: ClusterIP
+  selector:
+    app: angular-on-kubernetes
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: angular-on-kubernetes
+  namespace: test
+  labels:
+    app: angular-on-kubernetes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: angular-on-kubernetes
+  template:
+    metadata:
+      labels:
+        app: angular-on-kubernetes
+    spec:
+      containers: 
+        - name: angular-on-kubernetes
+          image: sternrassler/angular-on-kubernetes:0.0.1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: angular-on-kubernetes
+  namespace: test
+  annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: local.navida.dev
+      http:
+        paths:
+          - path: /testangular(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: angular-on-kubernetes
+                port:
+                  number: 80
+
