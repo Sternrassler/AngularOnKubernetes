@@ -7,7 +7,7 @@ COPY ./package.json .
 RUN npm install
 
 COPY . .
-RUN ng build --configuration=production
+RUN ng build --configuration=production --deploy-url=/testangular/ --base-href=/testangular/
 
 
 # BASE IMAGE with an alias #

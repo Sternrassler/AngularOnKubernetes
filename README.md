@@ -62,14 +62,13 @@ To build the Angular project in a Docker container, a Dockerfile is needed. This
 FROM node:19.1-alpine3.16 as build
 WORKDIR /app
 
-RUN npm install -g @angular/cli@13
+RUN npm install -g @angular/cli@15
 
 COPY ./package.json .
 RUN npm install
 
 COPY . .
-RUN ng build --configuration=production --base-href /testangular/
-
+RUN ng build --configuration=production  --deploy-url=/testangular/ --base-href=/testangular/
 
 # BASE IMAGE with an alias #
 FROM nginx:1.23-alpine as runtime
@@ -200,3 +199,7 @@ spec:
 Der Einfachheit halber wird hier alles in ein `deploy.yaml`` gepackt. Und mit folgendem Befehl wird das ganze auf Kubernetes deployed:
 
 `kubectl apply -f kubernetes/deploy.yaml`
+
+## Conclusion
+
+Despite all claims of Angular, even in version 15, the DI provider APP_BASE_HREF does not work properly. It is not possible to host the application under a path other than the root path. This is a pity, because it is very important for the development of microfrontends that the application can be hosted under another path than the root path. The only way to host an application under a path other than the root path is to use ``--deploy-url=/testangular/ --base-href=/testangular/`` when building the application. However, this is not really nice since ``--deploy-url`` is set to depricated and should not really be used anymore.

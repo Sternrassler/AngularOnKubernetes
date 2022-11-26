@@ -1,5 +1,3 @@
-import { APP_BASE_HREF } from '@angular/common';
-import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -17,7 +15,7 @@ import { SecondComponent } from './second/second.component';
     BrowserModule,
     AppRoutingModule
   ],
-  providers: [{ provide: APP_BASE_HREF, useValue: '/testangular/' }],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
