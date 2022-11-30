@@ -1,0 +1,5 @@
+controller:
+  hostNetwork: true
+
+extraArgs:
+  default-ssl-certificate: haproxy-ingress/haproxy-server-certs
